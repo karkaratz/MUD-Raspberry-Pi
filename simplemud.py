@@ -133,6 +133,8 @@ while True:
                                  + "surroundings, e.g. 'look'")
             mud.send_message(id, "  go <exit>      - Moves through the exit "
                                  + "specified, e.g. 'go outside'")
+            mud.send_message(id, "  leave          - Leave the game without saving."
+                                 )
 
         # 'say' command
         elif command == "say":
@@ -173,6 +175,8 @@ while True:
                                                     ", ".join(rm["exits"])))
 
         # 'go' command
+        elif command == "leave":
+        	mud._handle_disconnect(id)
         elif command == "go":
 
             # store the exit name

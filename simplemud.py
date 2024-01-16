@@ -25,6 +25,8 @@ import time
 
 import hashlib
 from player import Player
+from room import Room
+import json
 game_name = "MUD LAND"
 
 
@@ -42,17 +44,22 @@ def logged_in():
         # import the MUD server class
 from mudserver import MudServer
 
+def import_rooms(rooms):
+    with open("rooms.txt", "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            name, description, directions = line.split("|")
+            tmp_room=Room()
+            tmp_room.set_name(name)
+            tmp_room.set_description(description)
+            tmp_room.set_directions(json.loads(directions))
+            rooms[name] = tmp_room
+
+
 # structure defining the rooms in the game. Try adding more rooms to the game!
-rooms = {
-    "Tavern": {
-        "description": "You're in a cozy tavern warmed by an open fire.",
-        "exits": {"outside": "Outside"},
-    },
-    "Outside": {
-        "description": "You're standing outside a tavern. It's raining.",
-        "exits": {"inside": "Tavern"},
-    }
-}
+rooms = {}
+import_rooms(rooms)
+#print (rooms[0].get_name())
 
 # stores the players in the game
 players = {}
@@ -218,7 +225,7 @@ while True:
                                      + "Type 'help' for a list of commands. Have fun!")
 
                     # send the new player the description of their current room
-                    mud.send_message(id, rooms[players[id].get_room()]["description"])
+                    mud.send_message(id, rooms[players[id].get_room()].get_description())
 
         # each of the possible commands is handled below. Try adding new
         # commands to the game!
@@ -255,7 +262,7 @@ while True:
             rm = rooms[players[id].get_room()]
 
             # send the player back the description of their current room
-            mud.send_message(id, rm["description"])
+            mud.send_message(id, rm.get_description())
 
             playershere = []
             # go through every player in the game
@@ -273,7 +280,7 @@ while True:
 
             # send player a message containing the list of exits from this room
             mud.send_message(id, "Exits are: {}".format(
-                ", ".join(rm["exits"])))
+                ", ".join(rm.get_directions())))
 
         # 'go' command
         elif command == "leave":
@@ -284,10 +291,10 @@ while True:
             ex = params.lower()
 
             # store the player's current room
-            rm = rooms[players[id].getroom()]
+            rm = rooms[players[id].get_room()]
 
             # if the specified exit is found in the room's exits list
-            if ex in rm["exits"]:
+            if ex in rm.get_directions():
 
                 # go through all the players in the game
                 for pid, pl in players.items():
@@ -301,7 +308,7 @@ while True:
                             players[id].get_charname(), ex))
 
                 # update the player's current room to the one the exit leads to
-                players[id].set_room(rm["exits"][ex])
+                players[id].set_room(rm.get_directions()[ex])
                 rm = rooms[players[id].get_room()]
 
                 # go through all the players in the game

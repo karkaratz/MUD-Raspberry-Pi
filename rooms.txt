@@ -1,0 +1,3 @@
+Tavern|You're in a cozy tavern warmed by an open fire.|{"outside": "Outside", "up" : "Bedrooms"}
+Outside|You're standing outside a tavern. It's raining.|{"inside": "Tavern"}
+Bedrooms|Bedrooms. You are tired, you can sleep.|{"down": "Tavern"}

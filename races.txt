@@ -1,0 +1,16 @@
+[{
+    "name": "Human",
+    "type": "Non-flying",
+    "Night vision": "average",
+    "Day vision": "excellent",
+    "Description": "A standard human being, they are capable of performing psionics, magic,\nand may have mutations. After the fall of civilization most humans hid or scraped by. Some where\nhorribly deformed, others simply starved. A small few survived the blasts\nand started repopulating cities.",
+    "Special Abilities": "None"
+},
+{
+    "name": "Test1",
+    "type": "Test1",
+    "Night vision": "average",
+    "Day vision": "excellent",
+    "Description": "Test1",
+     "Special Abilities": "None"
+}]

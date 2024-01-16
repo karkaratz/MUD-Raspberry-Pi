@@ -56,9 +56,17 @@ def import_rooms(rooms):
             rooms[name] = tmp_room
 
 
+def import_races(file_path):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+    return {entry["name"]: entry for entry in data}
+
+
 # structure defining the rooms in the game. Try adding more rooms to the game!
 rooms = {}
 import_rooms(rooms)
+races = import_races('races.txt')
+
 #print (rooms[0].get_name())
 
 # stores the players in the game
@@ -68,22 +76,22 @@ players = {}
 mud = MudServer()
 
 def signup(id, command):
-    if players[id].get_phase2()=="Pre-Login":
+    if players[id].get_phase2() == "Pre-Login":
         mud.send_message(id, "Enter email address: ")
         return "signup1"
-    elif players[id].get_phase2()=="signup1":
+    elif players[id].get_phase2() == "signup1":
         players[id].set_email(command)
         mud.send_message(id, "Enter password: ")
         print (players[id].get_email())
         return "signup2"
-    elif players[id].get_phase2()=="signup2":
+    elif players[id].get_phase2() == "signup2":
         enc=command.encode()
         passwd = hashlib.md5(enc).hexdigest()
         players[id].set_pass1(passwd)
         mud.send_message(id, "Confirm password: ")
         print (players[id].get_pass1())
         return "signup3"
-    elif players[id].get_phase2()=="signup3":
+    elif players[id].get_phase2() == "signup3":
         enc = command.encode()
         passwd = hashlib.md5(enc).hexdigest()
         players[id].set_pass2(passwd)
@@ -99,7 +107,7 @@ def signup(id, command):
                 f.write(players[id].get_charname() + ":")
                 f.write(players[id].get_pass1() + "\n")
                 f.close()
-                mud.send_message(id,"You have registered successfully!")
+                mud.send_message(id, "You have registered successfully!")
 
         return "signupend"
 
